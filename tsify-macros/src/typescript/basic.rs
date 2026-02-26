@@ -30,6 +30,7 @@ pub struct TsTypeElement {
     pub key: String,
     pub type_ann: TsType,
     pub optional: bool,
+    pub readonly: bool,
     pub comments: Vec<String>,
 }
 

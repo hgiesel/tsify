@@ -168,6 +168,7 @@ impl TsEnumDecl {
                     .map(|t| TsTypeElement {
                         key: t.key.clone(),
                         optional: t.optional,
+                        readonly: t.readonly,
                         type_ann: TsEnumDecl::replace_type_params(t.type_ann.clone(), type_args),
                         comments: vec![],
                     })

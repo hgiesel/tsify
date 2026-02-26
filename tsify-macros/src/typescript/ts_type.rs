@@ -239,6 +239,7 @@ impl TsType {
                         key: name,
                         type_ann,
                         optional: false,
+                        readonly: false,
                         comments: vec![],
                     }
                     .into()
@@ -250,6 +251,7 @@ impl TsType {
                         key: tag.clone(),
                         type_ann: TsType::Lit(name),
                         optional: false,
+                        readonly: false,
                         comments: vec![],
                     }
                     .into();
@@ -260,6 +262,7 @@ impl TsType {
                         key: tag.clone(),
                         type_ann: TsType::Lit(name),
                         optional: false,
+                        readonly: false,
                         comments: vec![],
                     }
                     .into();
@@ -272,6 +275,7 @@ impl TsType {
                     key: tag.clone(),
                     type_ann: TsType::Lit(name),
                     optional: false,
+                    readonly: false,
                     comments: vec![],
                 };
 
@@ -282,6 +286,7 @@ impl TsType {
                         key: content.clone(),
                         type_ann,
                         optional: false,
+                        readonly: false,
                         comments: vec![],
                     };
 
@@ -381,6 +386,7 @@ impl TsType {
                     .map(|t| TsTypeElement {
                         key: t.key.clone(),
                         optional: t.optional,
+                        readonly: t.readonly,
                         type_ann: t.type_ann.clone().prefix_type_refs(prefix, exceptions),
                         comments: t.comments.clone(),
                     })

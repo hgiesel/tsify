@@ -13,6 +13,7 @@ macro_rules! type_lit {
                     key: stringify!($k).to_string(),
                     type_ann: $t,
                     optional: false,
+                    readonly: false,
                     comments: vec![],
                 }
             ),*],

@@ -172,15 +172,12 @@ pub struct TsifyFieldAttrs {
     pub type_override: Option<String>,
     pub type_params: Option<Vec<String>>,
     pub optional: bool,
+    pub readonly: bool,
 }
 
 impl TsifyFieldAttrs {
     pub fn from_serde_field(field: &Field) -> syn::Result<Self> {
-        let mut attrs = Self {
-            type_override: None,
-            type_params: None,
-            optional: false,
-        };
+        let mut attrs = Self::default();
 
         for attr in &field.original.attrs {
             if !attr.path().is_ident("tsify") {
@@ -219,7 +216,15 @@ impl TsifyFieldAttrs {
                     return Ok(());
                 }
 
-                Err(meta.error("unsupported tsify attribute, expected one of `type`, `type_params` or `optional`"))
+                if meta.path.is_ident("readonly") {
+                    if attrs.readonly {
+                        return Err(meta.error("duplicate attribute"));
+                    }
+                    attrs.readonly = true;
+                    return Ok(());
+                }
+
+                Err(meta.error("unsupported tsify attribute, expected one of `type`, `type_params`, `optional`, `readonly`"))
             })?;
         }
 

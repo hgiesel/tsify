@@ -150,6 +150,7 @@ impl<'a> Parser<'a> {
                     key: tag.clone(),
                     type_ann: TsType::Lit(name),
                     optional: false,
+                    readonly: false,
                     comments: vec![],
                 };
 
@@ -244,9 +245,10 @@ impl<'a> Parser<'a> {
                 let key = field.attrs.name().serialize_name().to_owned();
                 let (type_ann, field_attrs) = self.parse_field(field);
 
-                let optional = field_attrs.is_some_and(|attrs| attrs.optional);
+                let optional = field_attrs.as_ref().map_or(false, |attrs| attrs.optional);
                 let default_is_none = self.container.serde_attrs().default().is_none()
                     && field.attrs.default().is_none();
+                let readonly = field_attrs.as_ref().map_or(false, |attrs| attrs.readonly);
 
                 let type_ann = if optional {
                     match type_ann {
@@ -263,6 +265,7 @@ impl<'a> Parser<'a> {
                     key,
                     type_ann,
                     optional: optional || !default_is_none,
+                    readonly,
                     comments,
                 }
             })
