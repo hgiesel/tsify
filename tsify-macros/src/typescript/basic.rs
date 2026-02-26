@@ -47,17 +47,17 @@ impl TsTypeElement {
 
 impl Display for TsTypeElement {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let readonly_ann = if self.readonly { "readonly " } else { "" };
         let key = &self.key;
         let type_ann = &self.type_ann;
-
         let optional_ann = if self.optional { "?" } else { "" };
 
         write_doc_comments(f, &self.comments)?;
 
         if is_js_ident(key) {
-            write!(f, "{key}{optional_ann}: {type_ann}")
+            write!(f, "{readonly_ann}{key}{optional_ann}: {type_ann}")
         } else {
-            write!(f, "\"{key}\"{optional_ann}: {type_ann}")
+            write!(f, "{readonly_ann}\"{key}\"{optional_ann}: {type_ann}")
         }
     }
 }
